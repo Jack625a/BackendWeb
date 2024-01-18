@@ -7,7 +7,6 @@ const { buffer } = require('stream/consumers');
 const server=http.createServer((req,res)=>{
     if(req.url==='/realizar-solicitud'){
         realizarSolicitud((resultado)=>{
-
             res.writeHead(200,{'Content-Type':'text/plain'});
             res.end(`Obtención de la solicitud GET: ${resultado}`);
         });
