@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizacion de Datos</title>
+</head>
+<body>
+        <nav>
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="actualizacion.html">Actualizacion de Datos</a></li>
+                <li><a href="elimincacion.html">Eliminar datos</a></li>
+            </ul>
+        </nav>
+
+        <h1>Actualizacion de Datos</h1>
+        <form id="actualizar-formulario">
+            <label for="update-id">ID:</label>
+            <input type="number" name="id" id="id"required>
+            <label for="actualizacion-nombre">Nuevo nombre:</label>
+            <input type="text" id="actualizacion-nombre" name="nombre" required>
+            <button type="submit" onclick="updateItem()">Actualizar datos</button>
+        </form>
+
+    <script src="solicitudItems.js"></script>
+</body>
+</html>
