@@ -1,7 +1,11 @@
 const express=require('express');
 const route=express.Router();
+const Airtable=require('airtable');
 
-//Los datos de interaccion
+//Configuracion de Airtable
+const base=new Airtable({apiKey:'su api key'}).base('su base name');
+
+/**Los datos de interaccion
 let items=[
     {
         id:1,
@@ -16,40 +20,68 @@ let items=[
         nombre:'Producto 3'
     }
 ];
+**/
 
-//Obtenecion de todos los datos
+//Obtener los datos de Airtable
 route.get('/',(req,res)=>{
-    res.json(items)
-})
-
-//Ruta para crear un producto nuevo
-route.post('/',(req,res)=>{
-    const nuevoItem=req.body;
-    items.push(nuevoItem);
-    res.status(201).json(nuevoItem);
+    const items=[];
+    base('Items').select({
+        view:'Grid view'
+    }).eachPage((records,fetchNextPage)=>{
+        records.forEach(record=>{
+            items.push(record.fields);
+        });
+        fetchNextPage();
+    },err=>{
+        if(err){
+            res.status(500).json({error:'Error al obtener los datos'});
+        }else{
+            res.json(items);
+        }
+    });
 });
 
+//Crear un nuevo registro en aitrable POST
+route.post('/',(req,res)=>{
+    const newItem={
+        nombre:req.body.nombre,
+        precio:req.body.precio,
+        imagen:req.body.imagen
+        //Agregar otros campos descripcion, cantidad
+    }
+    base('Items').create(newItem,(err,record)=>{
+        if(err){
+            res.status(500).json({error:'Error al crear un nuevo producto'});
+        }else{
+            res.status(201).json(record.find);
+        }
+    });
+});
 
-//Ruta para actualizar un producto por ID.
+//Actualizar un item por ID, PUT
 route.put('/:id',(req,res)=>{
     const {id}=req.params;
     const {nombre}=req.body;
-    const itemId= items.findIndex(item =>item.id==id);
-
-    if(itemId !==-1){
-        items[itemId].nombre=nombre;
-        res.json(items[itemId]);
-    }else{
-        res.status(404).json({mensaje:'Error no existe el producto'});
-    }
+    base('Items').update(id, {nombre},(err,record)=>{
+        if(err){
+            res.status(500).json({error: 'Error al actualizar el producto'});
+        }else{
+            res.json(record.fields);
+        }
+    });
 });
 
-
-//Ruta eliminacion de un producto
+//Eliminar un item por ID DELETE
 route.delete('/:id',(req,res)=>{
     const {id}=req.params;
-    items=items.filter(item=>item.id!=id);
-    res.json({mensaje:'Producto eliminado correctamente'});
+    base('Items').destroy(id,(err)=>{
+        if(err){
+            res.status(500).json({error: 'Error al eliminar un producto'});
+        }else{
+            res.json({mensaje:'Producto eliminado correactamente'});
+        }
+    });
 });
+
 
 module.exports=route;
