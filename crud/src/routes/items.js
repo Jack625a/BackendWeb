@@ -3,7 +3,7 @@ const route=express.Router();
 const Airtable=require('airtable');
 
 //Configuracion de Airtable
-const base=new Airtable({apiKey:'su api key'}).base('su base name');
+const base=new Airtable({apiKey:'key5mToD2psgxpPyp'}).base('appHG3rNe4eMAkJz5');
 
 /**Los datos de interaccion
 let items=[
