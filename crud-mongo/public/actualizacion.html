@@ -14,17 +14,101 @@
             </ul>
         </nav>
 
-        <h1>Lista de Productos disponibles</h1>
-    <ul id="item-list"></ul>
-        <h1>Actualizacion de Datos</h1>
+      
+        <h1>Actualizacion de Producto</h1>
         <form id="actualizar-formulario">
-            <label for="update-id">ID:</label>
-            <input type="number" name="id" id="id"required>
-            <label for="actualizacion-nombre">Nuevo nombre:</label>
-            <input type="text" id="actualizacion-nombre" name="nombre" required>
-            <button type="submit" onclick="updateItem()">Actualizar datos</button>
+            <label for="update-id">Seleccionar Producto: </label>
+            <select name="actualizar-producto" id="actualizar-producto"></select>
+            <br>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre">
+            <br>
+            <label for="precio">Precio:</label>
+            <input type="number" name="precio" id="precio">
+            <br>
+            <button type="submit" onclick="updateItem()">Actualizar Producto</button>
         </form>
+    <script>
+        async function getProductList(){
+            try{
+                const response=await fetch('/items');
+                if(!response.ok){
+                    throw new Error('Error al obtener los productos');
+                }
+                const products=await response.json();
+                return products;
+            }catch(error){
+                console.error('Error:',error.message);
+                return [];
+            }
+        }
 
-    <script src="solicitudItems.js"></script>
+        //Funcion para crear las opciones
+        async function idsProductSelect(){
+            const updateProductSelect=document.getElementById('actualizar-producto');
+            const products=await getProductList();
+            products.forEach(product=>{
+                const opciones=document.createElement('option');
+                opciones.value=product._id;
+                opciones.textContent=product.nombre;
+                updateProductSelect.appendChild(opciones);
+            });
+        }
+
+        //funcion para obtener los detalles del producto seleccionado 
+        async function idProductDetalles(){
+            const productId=document.getElementById('actualizar-producto').value;
+
+            //Verificar si se seleccion un producto
+            if(!productId){
+                alert('Seleccione un producto para actualizar');
+                return;
+            }
+            try{
+                const response=await fetch(`/items/${productId}`);
+                if(!response.ok){
+                    throw new Error('Error al obtner los detalles del prdocuto');
+                }
+                const product=await response.json();
+                document.getElementById('nombre').value=product.nombre;
+                document.getElementById('precio').value=product.precio;
+            }catch(error){
+                console.error('Error:',error.message);
+            }
+        }
+
+        //Funcion para actualizar el producto
+        async function updateItem(){
+            const productId=document.getElementById('actualizar-producto').value;
+            const nombre=document.getElementById('nombre').value;
+            const precio=document.getElementById('precio').value;
+
+            if(!productId){
+                alert('Seleccione un producto para actualizar');
+                return;
+            }
+            try{
+                const response=await fetch (`/items/${productId}`,{
+                    method:'PUT',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify({nombre,precio})
+                });
+                if(response.ok){
+                    alert('Actualizado correctamente')
+                }else{
+                    throw new Error('Error al actualizar')
+                }
+            }catch(error){
+                console.error('Error: ',error.message);
+            }
+        }
+
+        window.onload=function(){
+            idsProductSelect();
+        };
+
+    </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizacion de Datos</title>
+    <title>Eliminar un Producto</title>
 </head>
 <body>
         <nav>
@@ -17,13 +17,72 @@
         <h1>Lista de Productos disponibles</h1>
         <ul id="item-list"></ul>
         
-        <h1>Eliminacion de Datos</h1>
+        <h1>Eliminar Producto</h1>
         <form id="delete-form">
-            <label for="delete-id">ID:</label>
-            <input type="number" name="id" id="eliminar-id" required>
-            <button type="button" onclick="deleteItem()">Eliminar dato</button>
+            <label for="delete-id">Seleccionar Producto:</label>
+            <select name="eliminar-producto" id="eliminar-producto"></select>
+            <button type="button" onclick="deleteItem()">Eliminar Producto</button>
         </form>
 
-        <script src="solicitudItems.js"></script>
+        <script>
+            //Funcion para obtener la lista de los productos
+            async function getProductList(){
+                try{
+                    const response=await fetch('/items');
+                    if(!response.ok){
+                        throw new Error('Error al obtener los productos');
+                    }
+                    const products=await response.json();
+                    return products;
+                }catch(errror){
+                    console.log('Error:',errror.message);
+                    return [];
+                }
+            }
+
+        //Funcion para llenar el selector para el formulario
+        async function idProductSelect(){
+            const deleteProductSelect=document.getElementById('eliminar-producto');
+            const products=await getProductList();
+            products.forEach(product=>{
+                const opciones=document.createElement('option');
+                opciones.value=product._id;
+                opciones.textContent=product.nombre;
+                deleteProductSelect.appendChild(opciones);
+            });
+        }
+
+        //Funcion para eliminar el prooducto
+        async function deleteItem(){
+            const deleteProductId=document.getElementById('eliminar-producto').value;
+
+            //Verficar que se seleccionon un producto para eliminar
+            if(!deleteProductId){
+                alert('Seleccione un producto para eliminar!!!')
+                return;
+            }
+            try{
+                const response=await fetch(`/items/${deleteProductId}`,{
+                    method:'DELETE',
+                });
+                if(response.ok){
+                    alert('Producto Eliminado')
+                }else{
+                    throw new Error('Error al eliminar el producto');
+                }
+            }catch(error){
+                console.error('Error',error.message);
+            }
+        }
+
+        window.onload=function(){
+            idProductSelect();
+        };
+
+
+
+        </script>
+
+       
 </body>
 </html>

@@ -8,15 +8,18 @@ const app=express();
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
+//Acceso a la carpeta Public
+app.use(express.static('public'));
 
 //Rutas
 //Ruta Principal
 app.get('/',(req,res)=>{
-    res.send('Conexion desde Node!!!');
+    //res.send('Conexion desde Node!!!');
+    res.sendFile(path.join(__dirname,'public','index.html'));
 })
 
 //Ruta para obtener todos los productos
-app.get('/productos', async(req,res)=>{
+app.get('/items', async(req,res)=>{
     try{
         const productos=await Product.find({});
         res.status(200).json(productos);
@@ -26,7 +29,7 @@ app.get('/productos', async(req,res)=>{
 })
 
 //Ruta para obtener un producto por ID
-app.get('/productos/:id', async(req,res)=>{
+app.get('/items/:id', async(req,res)=>{
     try{
         const {id}=req.params;
         const producto=await Product.findById(id);
@@ -37,7 +40,7 @@ app.get('/productos/:id', async(req,res)=>{
 })
 
 //Ruta para crear un nuevo productos
-app.post('/productos', async(req,res)=>{
+app.post('/items', async(req,res)=>{
     try{
         const producto= await Product.create(req.body)
         res.status(200).json(producto);
@@ -48,7 +51,7 @@ app.post('/productos', async(req,res)=>{
 })
 
 //Ruta para actualzar un producto por ID
-app.put('/productos/:id', async(req,res)=>{
+app.put('/items/:id', async(req,res)=>{
     try{
         const {id}=req.params;
         const producto= await Product.findByIdAndUpdate(id,req.body);
@@ -65,7 +68,7 @@ app.put('/productos/:id', async(req,res)=>{
 
 
 //Ruta para Eliminar un producto por ID
-app.delete('/productos/:id', async(req,res)=>{
+app.delete('/items/:id', async(req,res)=>{
     try{
         const {id}=req.params;
         const producto=await Product.findByIdAndDelete(id);
