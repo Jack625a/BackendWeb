@@ -1,0 +1,14 @@
+{
+  "name": "auth-google",
+  "version": "1.0.0",
+  "description": "Auth Google",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ucatec",
+  "license": "ISC",
+  "dependencies": {
+    "passport-google-oauth": "^2.0.0"
+  }
+}

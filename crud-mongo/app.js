@@ -84,7 +84,7 @@ app.delete('/items/:id', async(req,res)=>{
 
 //Configuracion a la Base de datos
 mongoose.set("strictQuery",false)
-mongoose.connect('').then(()=>{
+mongoose.connect('mongodb+srv://Ucatec123:Ucatec123+@ucatecbackend.dkhydhp.mongodb.net/?retryWrites=true&w=majority').then(()=>{
     console.log('Conexion establecida a MongoDB')
     //const host='localhost';
     const puerto=3000;
