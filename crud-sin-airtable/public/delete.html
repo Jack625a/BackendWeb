@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="update.html">Actualizar datos</a></li>
+            <li><a href="delete.html">Eliminar datos</a></li>
+        </ul>
+    </nav>
+
+    <h1>Eliminacion de datos</h1>    
+    <form id="delete-form">
+        <label for="delete-id">ID:</label>
+        <input type="number" name="id" id="delete-id" required>
+        <button type="button" onclick="deleteItem()">Eliminar dato</button>
+    </form>
+    <script src="requestItems.js"></script>
+</body>
+</html>

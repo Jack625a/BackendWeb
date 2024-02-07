@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="update.html">Actualizacion de datos</a></li>
+            <li><a href="delete.html">Inicio</a></li>
+        </ul>    
+    </nav>
+
+    <h1>Actualizar Datos</h1>
+    <form id="update-form">
+        <label for="update-id">ID:</label>
+        <input type="number" name="id" id="id" required>
+        <label for="update-name">Nuevo Nombre:</label>
+        <input type="text" name="name" id="update-name" required>
+        <button type="submit" onclick="updateItem()">Actualizar Datos</button>
+    </form>
+    <script src="requestItems.js"></script>
+    </body>
+</html>

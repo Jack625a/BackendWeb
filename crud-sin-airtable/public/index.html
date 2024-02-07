@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD</title>
+</head>
+<body>
+
+    <h1>API REST</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="update.html">Actualizacion de datos</a></li>
+            <li><a href="delete.html">Borrar</a></li>
+        </ul>    
+    </nav>
+
+    <h1>Lista de productos</h1>
+    <ul id="item-list"></ul>
+
+    <h1>Insertar Datos</h1>
+    <form action="/items" method="POST">
+        <label for="name">Nombre:</label>
+        <input type="text" name="name" id="name" required>
+        <button type="submit">Agregar nuevo producto</button>
+    </form>
+    
+    <script src="requestItems.js"></script>
+
+    </body>
+</html>
