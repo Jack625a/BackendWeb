@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1><%=title%></h1>
+    <h2>Lista de Libros Disponibles</h2>
+    <ul>
+    <%libros.forEach(libro=>{ %>
+        <li>
+            <%=libro.title%>-<%=libro.autor%>
+            <form action="/eliminar-libro/<%=libro.id%>" method="post" style="display: inline;" >
+                <button type="submit">Eliminar Libro</button>
+            </form>
+            <a href="/editar-libro">Editar Libro</a>
+        </li>
+   <% });%>
+
+</ul>
+
+<h2>Agregar Nuevo Libro</h2>
+<form action="/agregar-libro" method="post">
+    <label for="title">Titulo: </label>
+    <input type="text" id="title" name="title" required>
+    <label for="autor">Autor: </label>
+    <input type="text" name="autor" id="autor" required>
+    <button type="submit">Agregar Libro</button>
+</form>
+</body>
+</html>
